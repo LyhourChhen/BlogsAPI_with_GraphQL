@@ -5,6 +5,9 @@ import { GraphQLServer } from "graphql-yoga";
 const typeDefs = `
     type Query {
         hello: String!
+        name: String!
+        location: String!
+        bio: String
     }
 `;
 
@@ -12,7 +15,11 @@ const typeDefs = `
 const resolvers = {
   //This must be match with type
   Query: {
-    hello: () => "This is my First GraphQL Query"
+    hello: () => "This is my First GraphQL Query",
+    name: () => "LyhourChhen",
+    location: () => "I love in PhnomPenh, City of 🇰🇭",
+    bio: () =>
+      "My name is LyhourChhen and i am also the software engineer who currently working with Frontend-Developments"
   }
 };
 
