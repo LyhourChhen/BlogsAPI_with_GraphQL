@@ -1,0 +1,8 @@
+{
+  "name": "Learning_GraphQL_NodeJs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/LyhourChhen/Learning_GraphQL_NodeJs.git",
+  "author": "LyhourChhen <ukamilove66@gmail.com>",
+  "license": "MIT"
+}
