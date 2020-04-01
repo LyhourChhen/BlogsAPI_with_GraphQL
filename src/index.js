@@ -46,6 +46,7 @@ const typeDefs = `
         title : String!
         body : String!
         published: Boolean!
+        author: People!
     }
 `
 
@@ -119,6 +120,13 @@ const resolvers = {
                     blog.title.toLowerCase().includes(arg.search.toLowerCase()) ||
                     blog.body.toLowerCase().includes(arg.search.toLowerCase())
                 )
+            })
+        },
+    },
+    Blogs: {
+        author: (parent, arg, ctx, info) => {
+            return peoplesData.find((user) => {
+                return user.id === parent.author
             })
         },
     },
