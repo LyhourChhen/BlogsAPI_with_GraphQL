@@ -16,7 +16,7 @@ const typeDefs = `
         grade: [Int!]!
         sumArray(numArray:[Float!]!): Float!
         people(search: String):[People!]!
-        handleSearchBlog(search: String):[Blogs]!
+        BlogsPost(search: String):[Blogs]!
     }
     type Query_with_scala {
         id: ID!
@@ -34,6 +34,7 @@ const typeDefs = `
         id: ID!
         article_name: String!
         paragraph: String!
+        author: People!
     }
     type People {
         id: ID!
@@ -109,7 +110,7 @@ const resolvers = {
                 return user.name.toLowerCase().includes(arg.search.toLowerCase())
             })
         },
-        handleSearchBlog: (__, arg) => {
+        BlogsPost: (__, arg) => {
             if (!arg.search) {
                 return blogsData
             }

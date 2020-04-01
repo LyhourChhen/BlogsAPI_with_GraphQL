@@ -24,6 +24,7 @@ export const blogs = [
         body:
             "Foreplay is important. Remember that love making starts before the sex part, so don't discount the foreplay phase",
         published: true,
+        author: 0,
     },
     {
         id: 1,
@@ -31,6 +32,7 @@ export const blogs = [
         body:
             'GraphQL is an open-source data query and manipulation language for APIs, and a runtime for fulfilling queries with existing data. GraphQL was developed internally by Facebook in 2012 before being publicly released in 2015.',
         published: true,
+        author: 1,
     },
     {
         id: 2,
@@ -38,5 +40,6 @@ export const blogs = [
         body:
             "Python is an interpreted, high-level, general-purpose programming language. Created by Guido van Rossum and first released in 1991, Python's design philosophy emphasizes code readability with its notable use of significant whitespace.",
         published: true,
+        author: 2,
     },
 ]
