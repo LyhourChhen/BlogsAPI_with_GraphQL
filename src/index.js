@@ -40,6 +40,7 @@ const typeDefs = `
         id: ID!
         name: String!
         age: Int
+        posts: Blogs!
     }
     type Blogs { 
         id: ID!
@@ -127,6 +128,15 @@ const resolvers = {
         author: (parent, arg, ctx, info) => {
             return peoplesData.find((user) => {
                 return user.id === parent.author
+            })
+        },
+    },
+    People: {
+        posts: (parent, arg, ctx, info) => {
+            console.log('parent', parent)
+            return blogsData.filter((post) => {
+                console.log('post author:', post.author)
+                return post.author === parent.id
             })
         },
     },
