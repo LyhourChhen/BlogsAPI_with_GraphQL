@@ -1,5 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
-import { data as peoplesData } from './dummyData'
+import { data as peoplesData, blogs as blogsData } from './dummyData'
 // Type Definition || Schema (This is where our structure should look like)
 // ! => It required field && if noting it will return null
 
@@ -16,6 +16,7 @@ const typeDefs = `
         grade: [Int!]!
         sumArray(numArray:[Float!]!): Float!
         people(search: String):[People!]!
+        handleSearchBlog(search: String):[Blogs]!
     }
     type Query_with_scala {
         id: ID!
@@ -38,6 +39,12 @@ const typeDefs = `
         id: ID!
         name: String!
         age: Int
+    }
+    type Blogs { 
+        id: ID!
+        title : String!
+        body : String!
+        published: Boolean!
     }
 `
 
@@ -100,6 +107,17 @@ const resolvers = {
             }
             return peoplesData.filter((user) => {
                 return user.name.toLowerCase().includes(arg.search.toLowerCase())
+            })
+        },
+        handleSearchBlog: (__, arg) => {
+            if (!arg.search) {
+                return blogsData
+            }
+            return blogsData.filter((blog) => {
+                return (
+                    blog.title.toLowerCase().includes(arg.search.toLowerCase()) ||
+                    blog.body.toLowerCase().includes(arg.search.toLowerCase())
+                )
             })
         },
     },
