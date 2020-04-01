@@ -10,6 +10,7 @@ const typeDefs = `
         location: String!
         bio: String
         me: User!
+        blog: Post!
     }
     type Query_with_scala {
         id: ID!
@@ -23,6 +24,11 @@ const typeDefs = `
         name: String!
         password: Float!
     }
+    type Post {
+        id: ID!
+        article_name: String!
+        paragraph: String!
+    }
 `
 
 // Resolvers => The function where where schema need to be performs
@@ -32,7 +38,7 @@ const resolvers = {
     Query: {
         hello: () => 'This is my First GraphQL Query',
         name: () => 'LyhourChhen',
-        location: () => 'I love in PhnomPenh, City of 🇰🇭',
+        location: () => 'I live in PhnomPenh, City of 🇰🇭',
         bio: () =>
             'My name is LyhourChhen and i am also the software engineer who currently working with Frontend-Developments',
         me() {
@@ -40,6 +46,14 @@ const resolvers = {
                 id: 1,
                 name: 'LyhourChhen',
                 password: 123456,
+            }
+        },
+        blog: () => {
+            return {
+                id: 1,
+                article_name: 'How to learn graphQL ?',
+                paragraph:
+                    'GraphQL is the best wat to deal with API faster and efficiency',
             }
         },
     },
