@@ -2,7 +2,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import {
     data as peoplesData,
     blogs as blogsData,
-    comments as CommentData,
+    comments as commentData,
     comments,
 } from './dummyData'
 // Type Definition || Schema (This is where our structure should look like)
@@ -47,6 +47,7 @@ const typeDefs = `
         name: String!
         age: Int
         posts: [Blogs]!
+        comments: [Comment!]!
     }
     type Blogs { 
         id: ID!
@@ -135,7 +136,7 @@ const resolvers = {
             })
         },
         comments: () => {
-            return CommentData
+            return commentData
         },
     },
     Blogs: {
@@ -149,6 +150,10 @@ const resolvers = {
         posts: (parent, arg, ctx, info) =>
             blogsData.filter((post) => {
                 return post.author === parent.id
+            }),
+        comments: (parent, arg, ctx, info) =>
+            comments.filter((com) => {
+                return com.author === parent.id
             }),
     },
     Comment: {
