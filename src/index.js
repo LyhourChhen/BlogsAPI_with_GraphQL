@@ -1,5 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
-
+import { data as peoplesData } from './dummyData'
 // Type Definition || Schema (This is where our structure should look like)
 // ! => It required field && if noting it will return null
 
@@ -15,6 +15,7 @@ const typeDefs = `
         add(x: Float, y: Float ): String!
         grade: [Int!]!
         sumArray(numArray:[Float!]!): Float!
+        people(search: String):[People!]!
     }
     type Query_with_scala {
         id: ID!
@@ -32,6 +33,11 @@ const typeDefs = `
         id: ID!
         article_name: String!
         paragraph: String!
+    }
+    type People {
+        id: ID!
+        name: String!
+        age: Int
     }
 `
 
@@ -88,7 +94,16 @@ const resolvers = {
                 return result
             }
         },
+        people: (parent, arg, ctx, info) => {
+            if (!arg.search) {
+                return peoplesData
+            }
+            return peoplesData.filter((user) => {
+                return user.name.toLowerCase().includes(arg.search.toLowerCase())
+            })
+        },
     },
+
     // With Scala Type => Boolean, String, ID, Int and Float
     Query_with_scala: {
         id: () => 12,
