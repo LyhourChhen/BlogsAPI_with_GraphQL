@@ -40,7 +40,7 @@ const typeDefs = `
         id: ID!
         name: String!
         age: Int
-        posts: Blogs!
+        posts: [Blogs]!
     }
     type Blogs { 
         id: ID!
@@ -130,6 +130,12 @@ const resolvers = {
                 return user.id === parent.author
             })
         },
+    },
+    People: {
+        posts: (parent, arg, ctx, info) =>
+            blogsData.filter((post) => {
+                return post.author === parent.id
+            }),
     },
 
     // With Scala Type => Boolean, String, ID, Int and Float
