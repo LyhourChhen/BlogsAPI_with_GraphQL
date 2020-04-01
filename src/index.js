@@ -13,6 +13,8 @@ const typeDefs = `
         me: User!
         blog: Post!
         add(x: Float, y: Float ): String!
+        grade: [Int!]!
+        sumArray(numArray:[Float!]!): Float!
     }
     type Query_with_scala {
         id: ID!
@@ -58,6 +60,7 @@ const resolvers = {
                     'GraphQL is the best wat to deal with API faster and efficiency',
             }
         },
+
         // With arguments
         // There are 4 main arg in the resolver function (parent, args, ctx, info)
         greeting: (parent, args, ctx, info) => {
@@ -72,6 +75,17 @@ const resolvers = {
                 return (result = `Results : ${args.x + args.y}`)
             } else {
                 return (result = 'All arguments must be provided')
+            }
+        },
+        grade: (parent, arg, ctx, info) => {
+            return [12, 56, 99, 95]
+        },
+        sumArray: (parent, arg, ctx, info) => {
+            if (arg.numArray.length === 0) {
+                return 0
+            } else {
+                let result = arg.numArray.reduce((acc, curr) => acc + curr, 0)
+                return result
             }
         },
     },
