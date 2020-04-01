@@ -3,6 +3,7 @@ import {
     data as peoplesData,
     blogs as blogsData,
     comments as CommentData,
+    comments,
 } from './dummyData'
 // Type Definition || Schema (This is where our structure should look like)
 // ! => It required field && if noting it will return null
@@ -57,6 +58,7 @@ const typeDefs = `
     type Comment {
         id: ID!
         text: String!
+        author: People!
     }
 `
 
@@ -148,6 +150,13 @@ const resolvers = {
             blogsData.filter((post) => {
                 return post.author === parent.id
             }),
+    },
+    Comment: {
+        author: (parent) => {
+            return peoplesData.find((user) => {
+                return user.id === parent.author
+            })
+        },
     },
 
     // With Scala Type => Boolean, String, ID, Int and Float
