@@ -147,6 +147,7 @@ const resolvers = {
         comments: () => {
             return commentData
         },
+
     },
     Mutation: {
         createUser: (parent, arg, ctx, info) => {
