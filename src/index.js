@@ -24,6 +24,11 @@ const typeDefs = `
         BlogsPost(search: String):[Blogs]!
         comments: [Comment!]!
     }
+    
+    type Mutation {
+        createUser(name: String!, email: String!, age: Int): User!    
+    }
+
     type Query_with_scala {
         id: ID!
         name: String!
@@ -35,6 +40,8 @@ const typeDefs = `
         id: ID!
         name: String!
         password: Float!
+        email: String
+        age: Int
     }
     type Post {
         id: ID!
@@ -141,6 +148,12 @@ const resolvers = {
             return commentData
         },
     },
+    Mutation: {
+        createUser: (parent, arg, ctx, info) => {
+            console.log("HI from arg", arg)
+        }
+    },
+
     Blogs: {
         author: (parent, arg, ctx, info) => {
             return peoplesData.find((user) => {
