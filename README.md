@@ -13,3 +13,8 @@ Resolvers => The function where where schema need to be performs
 Scala Types => `String, Boolean, Int, Float, ID`
 
 Resolvers arguments => `(parent, args, ctx, info)`
+
+-   Type of GraphQL
+    -   Query : `GET` Data
+    -   Mutation : `POST, DEL, PUT` Data
+    -   Subscription : `Real Time with Websocket`

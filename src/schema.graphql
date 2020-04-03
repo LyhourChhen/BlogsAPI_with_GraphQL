@@ -29,6 +29,9 @@ type Mutation {
     updateUser(id: ID!, data: updateUserInput!): User!
     updateBlogs(id: ID!, data: updateBlogsInput): Blogs!
 }
+type Subscription {
+    count: Int!
+}
 
 # type Query_with_scala {
 #     id: ID!
