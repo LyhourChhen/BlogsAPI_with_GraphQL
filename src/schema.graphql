@@ -15,13 +15,13 @@ type Query {
 }
 
 type Mutation {
-    createUser(data: createUserInput): User!
+    createUser(data: createUserInput): User! # worked
     createPost(
         title: String!
         body: String!
         published: Boolean!
         author: ID!
-    ): Blogs! #Bug ==> Fixed
+    ): Blogs! #Bug ==> Fixed => worked
     createComment(text: String!, author: ID!, post: ID!): Comment! #Bug
     deleteUser(id: ID!): User! #Bug
     deletePost(id: ID!): Blogs! #Bug
@@ -67,14 +67,14 @@ type Blogs {
     title: String!
     body: String!
     published: Boolean
-    author: People
-    comments: [Comment!]
+    author: People!
+    comments: [Comment!]!
 }
 type Comment {
     id: ID!
     text: String!
-    author: People!
-    posts: Blogs!
+    author: [People!]!
+    posts: [Blogs!]!
 }
 
 input createUserInput {
