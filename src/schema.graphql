@@ -22,16 +22,16 @@ type Mutation {
         published: Boolean!
         author: String!
     ): Blogs!
-    createComment(text: String!, author: ID!, post: ID!): Comment!
-    deleteUser(id: ID!): User!
-    deletePost(id: ID!): Blogs!
-    deleteComment(id: ID!): Comment!
-    updateUser(id: ID!, data: updateUserInput!): User!
-    updateBlogs(id: ID!, data: updateBlogsInput): Blogs!
+    createComment(text: String!, author: ID!, post: ID!): Comment! #Bug
+    deleteUser(id: ID!): User! #Bug
+    deletePost(id: ID!): Blogs! #Bug
+    deleteComment(id: ID!): Comment! #Bug
+    updateUser(id: ID!, data: updateUserInput!): User! #Bug
+    updateBlogs(id: ID!, data: updateBlogsInput): Blogs! #Bug
 }
 type Subscription {
     count: Int!
-    comments(postId: ID!): Comment!
+    comments(postId: ID!): Comment! #Bug => need to fix
 }
 
 # type Query_with_scala {

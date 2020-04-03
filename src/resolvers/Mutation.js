@@ -35,7 +35,8 @@ const Mutation = {
         return post
     },
     createComment: (parent, args, ctx, info) => {
-        const userExist = ctx.db.peoplesData.some((user) => user.id === arg.author)
+        const { pubsub } = ctx
+        const userExist = ctx.db.peoplesData.some((user) => user.id === args.author)
         const postExist = ctx.db.blogsData.some(
             (post) => post.id === args.post && post.published,
         )
@@ -49,7 +50,7 @@ const Mutation = {
             post: args.post,
         }
         ctx.db.commentData.push(comment)
-        ctx.pubsub.published(`comment ${args.post}`, {
+        pubsub.publish(`comment ${args.post}`, {
             id: uuidv4(),
             text: args.text,
             author: args.author,
