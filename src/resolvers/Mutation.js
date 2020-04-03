@@ -49,6 +49,12 @@ const Mutation = {
             post: args.post,
         }
         ctx.db.commentData.push(comment)
+        ctx.pubsub.published(`comment ${args.post}`, {
+            id: uuidv4(),
+            text: args.text,
+            author: args.author,
+            post: args.post,
+        })
         return comment
     },
     deleteUser: (parent, args, ctx, info) => {

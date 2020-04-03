@@ -31,6 +31,7 @@ type Mutation {
 }
 type Subscription {
     count: Int!
+    comments(postId: ID!): Comment!
 }
 
 # type Query_with_scala {
