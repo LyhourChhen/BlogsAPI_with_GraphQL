@@ -1,5 +1,4 @@
-import uuid from 'uuid'
-export const data = [
+export let data = [
     {
         id: '0',
         name: 'Vicka',
@@ -20,7 +19,7 @@ export const data = [
     },
 ]
 
-export const blogs = [
+export let blogs = [
     {
         id: '0',
         title: 'How to make love <3',
@@ -47,9 +46,9 @@ export const blogs = [
     },
 ]
 
-export const comments = [
+export let comments = [
     {
-        id: '123342',
+        id: 123342,
         text: 'I love you',
         author: '1',
         postId: 1,

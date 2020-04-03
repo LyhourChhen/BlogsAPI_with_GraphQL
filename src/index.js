@@ -30,6 +30,9 @@ const typeDefs = `
         createUser(data : createUserInput): User!    
         createPost(title: String!, body: String!, published: Boolean!, author: String! ): Blogs!
         createComment(text: String!, author: ID!, post: ID!): Comment!
+        deleteUser(id: ID!): User!
+        deletePost(id: ID!): Blogs!
+        deleteComment(id: ID!): Comment!
     }
 
     type Query_with_scala {
@@ -174,7 +177,7 @@ const resolvers = {
             return user
         },
         createPost: (parent, arg, ctx, info) => {
-            // check weather user found
+            // check user found
             const foundUser = blogsData.some((blog) => {
                 blog.id === arg.author
             })
@@ -207,6 +210,56 @@ const resolvers = {
             }
             commentData.push(comment)
             return comment
+        },
+        deleteUser: (parent, args, ctx, info) => {
+            // Find index of ID
+            const userIndex = peoplesData.findIndex((user) => {
+                return user.id === args.id
+            })
+            // findIndex if not true will return -1
+            if (userIndex === -1) {
+                throw new Error('user not found!')
+            }
+            const deleteUser = peoplesData.splice(userIndex, 1)
+
+            blogsData.filter((post) => {
+                const match = user.id === arg.id
+                if (match) {
+                    commentData.filter((comment) => comment.postId !== post.id)
+                }
+                return !match
+            })
+            commentData.filter((comment) => comment.author !== args.id)
+            return deleteUser[0]
+        },
+        deletePost: (parent, args, ctx, info) => {
+            const postIndex = blogsData.findIndex((post) => {
+                return post.id === args.id
+            })
+            if (postIndex === -1) {
+                throw new Error('post not found')
+            }
+            // delete process
+
+            const deletePost = blogsData.splice(postIndex, 1)
+            commentData.filter((comment) => comment.postId === args.id)
+            return deletePost[0]
+        },
+        deleteComment: (__, args) => {
+            // check comment have or not
+            const foundComment = commentData.some((comment) => {
+                comment.id === args.id
+            })
+            if (!foundComment) {
+                throw new Error('Error!!, Comment not found dude, pls try again')
+            }
+            const deleteComment = commentData.filter((comment) => {
+                comment.id === args.id
+            })
+            commentData.filter((comment) => {
+                comment.id === args.id
+            })
+            return deleteComment
         },
     },
 
