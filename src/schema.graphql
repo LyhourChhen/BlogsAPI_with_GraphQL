@@ -94,7 +94,13 @@ input updateBlogsInput {
     published: Boolean
 }
 
+enum MutationType {
+    CREATED
+    UPDATED
+    DELETED
+}
+
 type PostSubscriptionPayload {
-    mutation: String!
+    mutation: MutationType!
     data: Blogs!
 }
