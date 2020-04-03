@@ -47,6 +47,11 @@ const Mutation = {
         const postExist = ctx.db.blogsData.some(
             (post) => post.id === args.post && post.published,
         )
+        console.log(
+            'check both user and post',
+            colors.red(userExist),
+            colors.green(postExist),
+        )
         if (!userExist || !postExist) {
             throw new Error("Can't even find the user and post!")
         }

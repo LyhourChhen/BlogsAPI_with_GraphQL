@@ -1,8 +1,8 @@
 {
-    "name": "Learning_GraphQL_NodeJs",
+    "name": "Blog's API with GraphQL",
     "version": "1.0.0",
     "main": "index.js",
-    "repository": "https://github.com/LyhourChhen/Learning_GraphQL_NodeJs.git",
+    "repository": "https://github.com/LyhourChhen/BlogsAPI_with_GraphQL.git",
     "author": "LyhourChhen <ukamilove66@gmail.com>",
     "license": "MIT",
     "scripts": {
