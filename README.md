@@ -1,4 +1,4 @@
-## Blog API GraphQL with NodeJS
+## Blog API with GraphQL && NodeJS
 
 -   [Demo Link](https://graphql-demo.mead.io/) - GraphQL Demo Online, Incase if you
     wanna try.
