@@ -57,6 +57,8 @@ const Mutation = {
             post: args.post,
         }
         ctx.db.commentData.push(comment)
+
+        // Subscription
         pubsub.publish(`comment ${args.post}`, {
             id: uuidv4(),
             text: args.text,
