@@ -20,8 +20,8 @@ type Mutation {
         title: String!
         body: String!
         published: Boolean!
-        author: String!
-    ): Blogs!
+        author: ID!
+    ): Blogs! #Bug ==> Fixed
     createComment(text: String!, author: ID!, post: ID!): Comment! #Bug
     deleteUser(id: ID!): User! #Bug
     deletePost(id: ID!): Blogs! #Bug
@@ -32,6 +32,7 @@ type Mutation {
 type Subscription {
     count: Int!
     comments(postId: ID!): Comment! #Bug => need to fix
+    post: Blogs! #Bug
 }
 
 # type Query_with_scala {
@@ -65,9 +66,9 @@ type Blogs {
     id: ID!
     title: String!
     body: String!
-    published: Boolean!
-    author: People!
-    comments: [Comment!]!
+    published: Boolean
+    author: People
+    comments: [Comment!]
 }
 type Comment {
     id: ID!

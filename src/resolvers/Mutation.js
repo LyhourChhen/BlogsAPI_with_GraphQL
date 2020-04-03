@@ -19,8 +19,9 @@ const Mutation = {
     createPost: (parent, args, ctx, info) => {
         // check user found
         const foundUser = ctx.db.blogsData.some((blog) => {
-            blog.id === arg.author
+            return blog.id === args.author
         })
+        console.log('after check user', colors.red(foundUser))
         if (!foundUser) {
             throw new Error('User/Author Not found!')
         }
@@ -32,6 +33,11 @@ const Mutation = {
             author: args.author,
         }
         ctx.db.blogsData.push(post)
+
+        if (args.published === true) {
+            ctx.pubsub.publish('post', post)
+        }
+
         return post
     },
     createComment: (parent, args, ctx, info) => {
