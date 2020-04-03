@@ -38,7 +38,12 @@ const Mutation = {
         console.log('data that push to post', colors.red(post))
 
         if (args.published === true) {
-            ctx.pubsub.publish('post', { post })
+            ctx.pubsub.publish('post', {
+                post: {
+                    mutation: 'CREATED',
+                    data: post,
+                },
+            })
         }
 
         return post
@@ -73,10 +78,7 @@ const Mutation = {
 
         // Subscription
         pubsub.publish(`comment ${args.post}`, {
-            id: uuidv4(),
-            text: args.text,
-            author: args.author,
-            post: args.post,
+            comment,
         })
         return comment
     },
@@ -102,6 +104,7 @@ const Mutation = {
         return deleteUser[0]
     },
     deletePost: (parent, args, ctx, info) => {
+        const { db, pubsub } = ctx
         const postIndex = ctx.db.blogsData.findIndex((post) => {
             return post.id === args.id
         })
@@ -112,6 +115,15 @@ const Mutation = {
 
         const deletePost = ctx.db.blogsData.splice(postIndex, 1)
         ctx.db.commentData.filter((comment) => comment.postId === args.id)
+
+        if (deletePost[0].published) {
+            pubsub.publish('post', {
+                post: {
+                    mutation: 'DELETED',
+                    data: deletePost[0],
+                },
+            })
+        }
         return deletePost[0]
     },
     deleteComment: (parent, args, ctx, info) => {
@@ -158,9 +170,13 @@ const Mutation = {
     },
     updateBlogs: (parent, args, ctx, info) => {
         // check post is exist ?
+        console.log('do you get data from context or not', ctx.db.blogsData)
+        console.log('did i recieve args from graphQL', args.id)
         const checkPost = ctx.db.blogsData.find((post) => {
             return post.id === args.id
         })
+        const originalPost = { ...ctx.db.blogsData }
+        const { pubsub } = ctx
         console.log('checkpost output', colors.red(checkPost))
         if (checkPost === undefined || checkPost === null) {
             throw new Error("Your blog isn't exist, please try different Id")
@@ -169,12 +185,38 @@ const Mutation = {
         if (typeof args.data.title === 'string') {
             checkPost.title === args.data.title
         }
-        if (typeof args.data.title === 'string') {
+        if (typeof args.data.body === 'string') {
             checkPost.body === args.data.body
         }
-        if (typeof args.data.title === 'boolean') {
+        if (typeof args.data.published === 'boolean') {
             checkPost.published === args.data.published
+            if (originalPost.published && !checkPost.published) {
+                // Delete
+                pubsub.publish('post', {
+                    post: {
+                        mutation: 'DELETED',
+                        data: originalPost,
+                    },
+                })
+            } else if (!originalPost.published && checkPost.published) {
+                // create
+                pubsub.publish('post', {
+                    post: {
+                        mutation: 'CREATED',
+                        data: checkPost,
+                    },
+                })
+            }
+        } else if (checkPost.published) {
+            // update
+            pubsub.publish('post', {
+                post: {
+                    mutation: 'UPDATED',
+                    data: checkPost,
+                },
+            })
         }
+
         return checkPost
     },
 }
