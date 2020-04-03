@@ -32,7 +32,7 @@ type Mutation {
 type Subscription {
     count: Int!
     comments(postId: ID!): Comment! #Bug => need to fix
-    post: Blogs! #Bug
+    post: Blogs! #Bug => fixed (Forget to to add object while data in published)
 }
 
 # type Query_with_scala {

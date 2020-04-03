@@ -35,7 +35,8 @@ const Mutation = {
         ctx.db.blogsData.push(post)
 
         if (args.published === true) {
-            ctx.pubsub.publish('post', post)
+            console.log('post data', colors.red(post))
+            ctx.pubsub.publish('post', { post })
         }
 
         return post
