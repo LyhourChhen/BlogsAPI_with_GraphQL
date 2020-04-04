@@ -1,0 +1,37 @@
+import { GraphQLServer, PubSub } from 'graphql-yoga'
+import colors from 'colors'
+import db from './db'
+// resolver
+import Query from './resolvers/Query'
+import Mutation from './resolvers/Mutation'
+import Blogs from './resolvers/Blogs'
+import People from './resolvers/People'
+import Comment from './resolvers/Comment'
+import Subscription from './resolvers/Subscription'
+
+// -------------------------------
+const pubsub = new PubSub()
+// -------------------------------
+const server = new GraphQLServer({
+    typeDefs: './src/schema.graphql',
+    resolvers: {
+        Query,
+        Mutation,
+        Blogs,
+        People,
+        Comment,
+        Subscription,
+    },
+    context: {
+        db,
+        pubsub,
+    },
+})
+
+server.start(() => {
+    console.log(
+        `Server is running on port ${colors.blue('=>')} ${colors.red(
+            'http://localhost:4000',
+        )} ${colors.blue('<=')}`,
+    )
+})
