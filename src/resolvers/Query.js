@@ -10,22 +10,54 @@ const Query = {
         // })
 
         // connected
-        return prisma.query.users(null, info)
-    },
-    posts(parent, args, { db }, info) {
-        if (!args.query) {
-            return db.posts
+        const opArgs = {}
+        if (args.query) {
+            opArgs.where = {
+                // single
+                // name_contains: args.query,
+                // with multiple logic
+                OR: [
+                    {
+                        name_contains: args.query,
+                    },
+                    {
+                        email_contains: args.query,
+                    },
+                ],
+            }
         }
+        return prisma.query.users(opArgs, info)
+    },
+    posts(parent, args, { db, prisma }, info) {
+        // if (!args.query) {
+        //     return db.posts
+        // }
 
-        return db.posts.filter((post) => {
-            const isTitleMatch = post.title
-                .toLowerCase()
-                .includes(args.query.toLowerCase())
-            const isBodyMatch = post.body
-                .toLowerCase()
-                .includes(args.query.toLowerCase())
-            return isTitleMatch || isBodyMatch
-        })
+        // return db.posts.filter((post) => {
+        //     const isTitleMatch = post.title
+        //         .toLowerCase()
+        //         .includes(args.query.toLowerCase())
+        //     const isBodyMatch = post.body
+        //         .toLowerCase()
+        //         .includes(args.query.toLowerCase())
+        //     return isTitleMatch || isBodyMatch
+        // })
+
+        // After Connected
+        const opArgs = {}
+        if (args.query) {
+            opArgs.where = {
+                OR: [
+                    {
+                        email_contains: args.query,
+                    },
+                    {
+                        email_contains: args.query,
+                    },
+                ],
+            }
+        }
+        return prisma.query.posts(null, info)
     },
     comments(parent, args, { db }, info) {
         return db.comments
