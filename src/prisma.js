@@ -5,6 +5,8 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466',
 })
 
+export default prisma
+
 // There are some common method to use in this project !
 // - prisma.query
 // - prisma.mutation

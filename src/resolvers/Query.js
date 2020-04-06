@@ -1,12 +1,16 @@
 const Query = {
-    users(parent, args, { db }, info) {
-        if (!args.query) {
-            return db.users
-        }
+    users(parent, args, { db, prisma }, info) {
+        // before connect with prisma server
+        // if (!args.query) {
+        //     return db.users
+        // }
 
-        return db.users.filter((user) => {
-            return user.name.toLowerCase().includes(args.query.toLowerCase())
-        })
+        // return db.users.filter((user) => {
+        //     return user.name.toLowerCase().includes(args.query.toLowerCase())
+        // })
+
+        // connected
+        return prisma.query.users(null, info)
     },
     posts(parent, args, { db }, info) {
         if (!args.query) {
