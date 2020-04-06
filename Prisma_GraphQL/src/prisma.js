@@ -21,28 +21,50 @@ const prisma = new Prisma({
 //     console.log(JSON.stringify(comments, null, 2))
 // })
 
+prisma.query
+    .posts(null, '{id title body published author{id name}}')
+    .then((data) => console.log('data', data))
+
 // mutation
+// prisma.mutation
+//     .createPost(
+//         {
+//             data: {
+//                 title: 'Need to fill inside here',
+//                 body: 'test => add more',
+//                 published: false,
+//                 author: {
+//                     connect: {
+//                         id: 'ck8l5p9ii006i07044xqxxhmv',
+//                     },
+//                 },
+//             },
+//         },
+//         '{id title body published}',
+//     )
+//     .then((post) => {
+//         console.log('data', post)
+//         return prisma.query.users(null, '{id name  posts {id title}}')
+//     })
+//     .then((data) => {
+//         console.log(JSON.stringify(data, null, 2))
+//     })
 
 prisma.mutation
-    .createPost(
+    .updatePost(
         {
+            where: {
+                id: 'ck8nw4hs9001b07044t8pop1r',
+            },
             data: {
-                title: 'Learn graphQL 101',
-                body: 'nana this is just a test',
-                published: false,
-                author: {
-                    connect: {
-                        id: 'ck8l5p9ii006i07044xqxxhmv',
-                    },
-                },
+                title: 'fuck you bitch',
+                body: "hahah bitch you've beeen lie",
+                published: true,
             },
         },
-        '{id title body published}',
+        '{id}',
     )
-    .then((post) => {
-        console.log('data', post)
-        return prisma.query.users(null, '{id name  posts {id title}}')
-    })
     .then((data) => {
-        console.log(JSON.stringify(data, null, 2))
+        return prisma.query.posts(null, '{id title body}')
     })
+    .then((data) => console.log(data))
