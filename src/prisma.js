@@ -1,5 +1,5 @@
 import { Prisma } from 'prisma-binding'
-
+import colors from 'colors'
 const prisma = new Prisma({
     typeDefs: 'src/generated/prisma.graphql',
     endpoint: 'http://localhost:4466',
@@ -73,7 +73,12 @@ const prisma = new Prisma({
 // Create new post using function (async & await)
 
 const createPostForUser = async (authorId, data) => {
+    // check if user exist or not
+    const userExist = prisma.exists.User({ id: authorId })
     // create post
+    if (userExist === false) {
+        throw new Error("user don't exist, pls check your user again !")
+    }
     const post = await prisma.mutation.createPost(
         {
             data: {
@@ -85,26 +90,27 @@ const createPostForUser = async (authorId, data) => {
                 },
             },
         },
-        '{id}',
+        '{author {id name email posts {id title published}}}',
     )
     // get user
-    const user = await prisma.query.user(
-        {
-            where: {
-                id: authorId,
-            },
-        },
-        '{id name email posts {id title published}}',
-    )
+    // const user = await prisma.query.user(
+    //     {
+    //         where: {
+    //             id: authorId,
+    //         },
+    //     },
+    //     '{id name email posts {id title published}}',
+    // )
 
-    return user
+    return post.author
 }
-
-// createPostForUser('ck8l5p9ii006i07044xqxxhmv', {
-//     title: 'These books that you should be read in your life',
-//     body: 'The art of war',
-//     published: true,
-// }).then((user) => console.log(JSON.stringify(user, null, 2)))
+createPostForUser('ck8l5p9ii006i07044xqxxhmv', {
+    title: 'These books that you should be read in your life',
+    body: 'The art of war',
+    published: true,
+})
+    .then((user) => console.log(JSON.stringify(user, null, 2)))
+    .catch((err) => console.log(err.message))
 
 const updatePostForUser = async (postId, data) => {
     const post = await prisma.mutation.updatePost(
@@ -132,3 +138,14 @@ const updatePostForUser = async (postId, data) => {
 // updatePostForUser('ck8lgen6700vw0704hrpq54z0', {
 //     published: false,
 // }).then((user) => console.log(JSON.stringify(user, null, 2)))
+
+// Prisma Utility Existence
+// Note : use <Name> from <Schema Name>
+prisma.exists
+    .Comment({
+        id: 'ck8l7xg3200ms07040sta110u',
+        author: {
+            id: 'ck8l7soex00jq0704p2an94z2',
+        },
+    })
+    .then((exist) => console.log('Does comment exist ? :', exist))
