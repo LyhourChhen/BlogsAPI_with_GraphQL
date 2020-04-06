@@ -1,2 +1,3 @@
-# BlogsAPI_with_GraphQL
-Blog's App with GraphQL.
+## Prisma with GraphQL
+
+-   In order to run this file `docker-compose up -d && prisma deploy`

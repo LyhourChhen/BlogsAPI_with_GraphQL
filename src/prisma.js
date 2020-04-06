@@ -71,6 +71,7 @@ const prisma = new Prisma({
 
 //  ==> Binding using Async & Await
 // Create new post using function (async & await)
+
 const createPostForUser = async (authorId, data) => {
     // create post
     const post = await prisma.mutation.createPost(
@@ -128,6 +129,6 @@ const updatePostForUser = async (postId, data) => {
     return user
 }
 
-updatePostForUser('ck8lgen6700vw0704hrpq54z0', {
-    published: false,
-}).then((user) => console.log(JSON.stringify(user, null, 2)))
+// updatePostForUser('ck8lgen6700vw0704hrpq54z0', {
+//     published: false,
+// }).then((user) => console.log(JSON.stringify(user, null, 2)))
