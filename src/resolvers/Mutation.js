@@ -244,7 +244,19 @@ const Mutation = {
 
         return prisma.mutation.createComment(
             {
-                data: args.data,
+                data: {
+                    text: args.data.text,
+                    author: {
+                        connect: {
+                            id: args.data.author,
+                        },
+                    },
+                    post: {
+                        connect: {
+                            id: args.data.post,
+                        },
+                    },
+                },
             },
             info,
         )
@@ -298,7 +310,7 @@ const Mutation = {
 
         // return comment
 
-        prisma.mutation.updateComment(
+        return prisma.mutation.updateComment(
             {
                 data: args.data,
                 where: {
