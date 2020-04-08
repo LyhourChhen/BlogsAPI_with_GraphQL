@@ -56,6 +56,27 @@ const Mutation = {
         }
     },
 
+    login: async (parent, args, { prisma }, info) => {
+        const user = await prisma.query.user({
+            where: {
+                email: args.data.email,
+            },
+        })
+        if (!user) {
+            throw new Error('we unable to found your email & username')
+        }
+        console.log('getting user & password from it', user, user.password)
+        const isMatch = await bscript.compare(args.data.password, user.password)
+        if (!isMatch) {
+            throw new Error('we unable to found your password !')
+        }
+
+        return {
+            user,
+            token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+        }
+    },
+
     async deleteUser(parent, args, { db, prisma }, info) {
         // const userIndex = db.users.findIndex((user) => user.id === args.id)
         // if (userIndex === -1) {
