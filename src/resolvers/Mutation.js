@@ -2,6 +2,7 @@ import bscript from 'bcryptjs'
 import colors from 'colors'
 import getUserId from '../utils/getUserId'
 import generateToken from '../utils/generateToken'
+import hashPassword from '../utils/hashPassword'
 // testing JWT
 // const token = jwt.sign({ id: 66 }, 'thesecretcode')
 // console.log('output the token: ', colors.red(token))
@@ -31,10 +32,8 @@ const Mutation = {
         // check password
         // Take in password -> Validate Password -> Hash Password -> Generate auth token
         console.log('console prisma', colors.blue(prisma))
-        if (args.data.password.length < 8) {
-            throw new Error('Password must be 8 character longer')
-        }
-        const password = await bscript.hash(args.data.password, 10)
+
+        const password = await hashPassword(args.data.password)
 
         const emailTaken = await prisma.exists.User({
             email: args.data.email,
@@ -133,6 +132,9 @@ const Mutation = {
         //     }
         //     return user
         // },
+        if(typeof args.data.password === "string"){
+            args.data.password = await hashPassword(args.data.password)
+        }
 
         return prisma.mutation.updateUser(
             {
