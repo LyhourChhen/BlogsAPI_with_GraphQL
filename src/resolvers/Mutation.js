@@ -77,7 +77,8 @@ const Mutation = {
         }
     },
 
-    async deleteUser(parent, args, { db, prisma }, info) {
+    async deleteUser(parent, args, { db, prisma, request }, info) {
+        const AuthUserId = getUserId(request)
         // const userIndex = db.users.findIndex((user) => user.id === args.id)
         // if (userIndex === -1) {
         //     throw new Error('User not found')
@@ -104,13 +105,14 @@ const Mutation = {
         return prisma.mutation.deleteUser(
             {
                 where: {
-                    id: args.id,
+                    id: AuthUserId,
                 },
             },
             info,
         )
     },
-    updateUser(parent, args, { db, prisma }, info) {
+    updateUser(parent, args, { db, prisma, request }, info) {
+        const AuthUserId = getUserId(request)
         //     const { id, data } = args
         //     const user = db.users.find((user) => user.id === id)
         //     if (!user) {
@@ -136,7 +138,7 @@ const Mutation = {
             {
                 data: args.data,
                 where: {
-                    id: args.id,
+                    id: AuthUserId,
                 },
             },
             info,
@@ -184,7 +186,7 @@ const Mutation = {
         console.log('data output', colors.red(data))
         return data
     },
-    deletePost(parent, args, { db, pubsub, prisma }, info) {
+    async deletePost(parent, args, { db, pubsub, prisma, request }, info) {
         // const postIndex = db.posts.findIndex((post) => post.id === args.id)
 
         // if (postIndex === -1) {
@@ -206,6 +208,18 @@ const Mutation = {
 
         // return post
         // -------
+
+        const AuthUserId = getUserId(request)
+        const postExist = await prisma.exists.Post({
+            id: args.id,
+            author: {
+                id: AuthUserId,
+            },
+        })
+        if (!postExist) {
+            throw new Error('Unable to delete post')
+        }
+
         return prisma.mutation.deletePost(
             {
                 where: {
