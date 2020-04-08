@@ -23,6 +23,7 @@
         "colors": "^1.4.0",
         "graphql-cli": "^3.0.14",
         "graphql-yoga": "^1.18.3",
+        "jsonwebtoken": "^8.5.1",
         "prisma-binding": "^2.3.16",
         "uuid": "^7.0.2"
     },

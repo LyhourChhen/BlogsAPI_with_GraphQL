@@ -1,5 +1,18 @@
 import bscript from 'bcryptjs'
 import colors from 'colors'
+import jwt from 'jsonwebtoken'
+
+// testing JWT
+// const token = jwt.sign({ id: 66 }, 'thesecretcode')
+// console.log('output the token: ', colors.red(token))
+// const decode = jwt.decode(token)
+// const decodeWithVerify = jwt.verify(token, 'thesecretcode')
+// console.log(
+//     'output the decond token: ',
+//     colors.green(decode),
+//     colors.white(decodeWithVerify),
+// )
+
 const Mutation = {
     createUser: async (parent, args, { db, prisma }, info) => {
         // const emailTaken = db.users.some((user) => user.email === args.data.email)
@@ -30,15 +43,17 @@ const Mutation = {
         if (emailTaken) {
             throw new Error('Email is taken')
         }
-        return prisma.mutation.createUser(
-            {
-                data: {
-                    ...args.data,
-                    password: password,
-                },
+        const user = await prisma.mutation.createUser({
+            data: {
+                ...args.data,
+                password: password,
             },
-            info,
-        )
+        })
+        console.log('did i revieve user', user.id)
+        return {
+            user,
+            token: jwt.sign({ userId: user.id }, 'thisisasecret'),
+        }
     },
 
     async deleteUser(parent, args, { db, prisma }, info) {
