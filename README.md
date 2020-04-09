@@ -15,7 +15,7 @@ Build the basic BlogAPI with graphQL.
 
     -   How to generate token by `prisma token`
 
--   Create Heroku App by `heroku login && heroku create` =>
+-   Create Heroku App and make cofiguration by `heroku login && heroku create` =>
     `heroku config: set ${PRODUCTION URL IN ENV}`
 
 Then push to `git push heroku master` https://fathomless-caverns-66441.herokuapp.com/
