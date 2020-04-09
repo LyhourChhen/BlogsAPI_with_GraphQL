@@ -14,7 +14,6 @@
         "wipe-data": "prisma delete",
         "deploy-prod": "cd prisma && prisma deploy -e ../config/prod.env",
         "deploy-dev": "cd prisma && prisma deploy -e ../config/dev.env",
-        "deploy-all": "cd prisma && prisma deploy -e ../config/dev.env && prisma deploy -e ../config/prod.env",
         "heroku-postbuild": "babel src --out-dir dist --copy-files"
     },
     "dependencies": {
