@@ -1,0 +1,147 @@
+import getUserId from '../utils/getUserId'
+import colors from 'colors'
+const Query = {
+    async users(parent, args, { db, prisma }, info) {
+        // before connect with prisma server
+        // if (!args.query) {
+        //     return db.users
+        // }
+
+        // return db.users.filter((user) => {
+        //     return user.name.toLowerCase().includes(args.query.toLowerCase())
+        // })
+
+        // connected
+        const opArgs = {
+            first: args.first,
+            skip: args.skip,
+            after: args.after,
+            orderBy: args.orderBy,
+        }
+        if (args.query) {
+            opArgs.where = {
+                // single
+                // name_contains: args.query,
+                // with multiple logic
+                OR: [
+                    {
+                        name_contains: args.query,
+                    },
+                    {
+                        email_contains: args.query,
+                    },
+                ],
+            }
+        }
+        const returnData = await prisma.query.users(opArgs, info)
+        console.log('render out return data', colors.white(returnData))
+        return returnData
+    },
+    posts(parent, args, { db, prisma }, info) {
+        // if (!args.query) {
+        //     return db.posts
+        // }
+
+        // return db.posts.filter((post) => {
+        //     const isTitleMatch = post.title
+        //         .toLowerCase()
+        //         .includes(args.query.toLowerCase())
+        //     const isBodyMatch = post.body
+        //         .toLowerCase()
+        //         .includes(args.query.toLowerCase())
+        //     return isTitleMatch || isBodyMatch
+        // })
+
+        // After Connected
+        const opArgs = {
+            first: args.first,
+            skip: args.skip,
+            after: args.after,
+            orderBy: args.orderBy,
+            where: {
+                published: true,
+            },
+        }
+        if (args.query) {
+            opArgs.where.OR = [
+                {
+                    email_contains: args.query,
+                },
+                {
+                    email_contains: args.query,
+                },
+            ]
+        }
+        return prisma.query.posts(null, info)
+    },
+    myPosts: (parent, args, { prisma, request }, info) => {
+        const AuthUserId = getUserId(request)
+        const obArgs = {
+            where: {
+                first: args.first,
+                skip: args.skip,
+                after: args.after,
+                orderBy: args.orderBy,
+                author: {
+                    id: AuthUserId,
+                },
+            },
+        }
+        if (args.query) {
+            obArgs.where.OR = [
+                {
+                    title_contains: args.query,
+                },
+                {
+                    body_contains: args.query,
+                },
+            ]
+        }
+        return prisma.query.posts(obArgs, info)
+    },
+    comments(parent, args, { db }, info) {
+        return db.comments
+    },
+    async me(parent, args, { prisma, request }, info) {
+        const AuthUserId = await getUserId(request)
+        return prisma.query.user(
+            {
+                where: {
+                    id: AuthUserId,
+                },
+            },
+            info,
+        )
+    },
+    async post(parent, args, { prisma, request }, info) {
+        const AuthUserId = await getUserId(request, false)
+        const posts = await prisma.query.posts(
+            {
+                where: {
+                    id: args.id,
+                    first: args.first,
+                    skip: args.skip,
+                    after: args.after,
+                    orderBy: args.orderBy,
+                    OR: [
+                        {
+                            published: true,
+                        },
+                        {
+                            author: {
+                                id: AuthUserId,
+                            },
+                        },
+                    ],
+                },
+            },
+            info,
+        )
+        if (posts.length === 0) {
+            throw new Error('Posts not found')
+        }
+        return posts[0]
+    },
+}
+
+export { Query as default }
