@@ -74,6 +74,39 @@ test('should expose public author profile', async () => {
     expect(res.data.users.length).toBe(1)
     expect(res.data.users[0].email).toBe(null)
 })
+
+test('should not login with bad credential', async () => {
+    const login = gql`
+        mutation {
+            login(data: { email: "fail22g@gmail.com", password: "klsdhfk32" }) {
+                token
+            }
+        }
+    `
+    expect(client.mutate({ mutation: login })).rejects.toThrow()
+})
+
+test('should not signup user with invalid password', async () => {
+    const createUser = gql`
+        mutation {
+            createUser(
+                data: {
+                    name: "jonh"
+                    email: "jonhShaby@gmail.com"
+                    password: "pass"
+                }
+            ) {
+                token
+            }
+        }
+    `
+    await expect(
+        client.mutate({
+            mutation: createUser,
+        }),
+    ).rejects.toThrow()
+})
+
 // import { getFirstName, validatePassword } from '../src/utils/user'
 // // first test
 // test('should render out', () => {
