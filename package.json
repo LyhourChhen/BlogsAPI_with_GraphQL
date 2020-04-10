@@ -7,7 +7,7 @@
     "license": "MIT",
     "scripts": {
         "start": "node dist/index.js",
-        "test": "jest",
+        "test": "jest --watch",
         "dev": "env-cmd ./config/dev.env nodemon --ext js,graphql --exec babel-node src/index.js",
         "get-schema": "graphql get-schema -p prisma --dotenv config/dev.env",
         "deploy-reviews": " echo '==> will be host at ==> http://localhost:4466/reviews \n' && cd ./prisma-reviews && prisma deploy",
